@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BaranFlow ⚡ — Baran Download & Media Suite</title>
+<link rel="stylesheet" href="/style.css">
+</head><body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">⚡ BaranFlow</div>
+    <div class="brandsub">Baran · v0.1.0 · Pro-Life</div>
+    <nav id="nav">
+      <div class="nav-item active" data-t="home">🏠 الرئيسية</div>
+      <div class="nav-item" data-t="downloads">⬇️ التنزيلات</div>
+      <div class="nav-item" data-t="video">🎬 مركز الفيديو</div>
+      <div class="nav-item" data-t="torrent">🧲 التورنت</div>
+      <div class="nav-item" data-t="uploads">📤 الرفع</div>
+      <div class="nav-item" data-t="tools">🛠️ الأدوات السريعة</div>
+      <div class="nav-item" data-t="net">🌐 الشبكة</div>
+      <div class="nav-item" data-t="logs">📝 السجل</div>
+      <div class="nav-item" data-t="settings">⚙️ الإعدادات</div>
+    </nav>
+    <div class="sidefoot">مطوّر مملوك لـ <b>Baran</b><br>© 2026 — محلي 100%</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <input id="urlInp" type="text" placeholder="الصق رابطًا مباشرًا أو رابط منصة فيديو…" dir="ltr">
+      <select id="segSel" class="sel" title="عدد أجزاء التقسيم">
+        <option value="1">جزء 1</option><option value="2">2</option>
+        <option value="4" selected>4 أجزاء</option><option value="8">8</option><option value="16">16</option>
+      </select>
+      <button id="analyzeBtn" class="btn primary">🔍 تحليل الرابط</button>
+    </div>
+
+    <section id="p-home" class="panel show">
+      <h1>لوحة القيادة</h1>
+      <div class="cards4">
+        <div class="card stat"><div class="k">⚡ سرعة التحميل</div><div class="v" id="sSpeed">0 B/s</div></div>
+        <div class="card stat"><div class="k">🌀 نشطة</div><div class="v" id="sActive">0</div></div>
+        <div class="card stat"><div class="k">✅ مكتملة</div><div class="v" id="sDone">0</div></div>
+        <div class="card stat"><div class="k">🛑 فاشلة</div><div class="v" id="sFailed">0</div></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><h2>🧿 نسبة أنواع الملفات</h2><div class="donutwrap"><div id="donut" class="donut"></div><div id="legend" class="legend"></div></div></div>
+        <div class="card"><h2>💾 التخزين</h2>
+          <div class="v big" id="sStorage">…</div><div class="muted">مستخدم داخل <span id="sDir"></span></div>
+          <div class="bar big"><div id="storageBar" style="width:8%"></div></div>
+        </div>
+      </div>
+      <div class="card"><h2>آخر الأحداث</h2><div id="miniLog" class="mini"></div></div>
+    </section>
+
+    <section id="p-downloads" class="panel">
+      <h1>التنزيلات</h1>
+      <div class="card">
+        <table><thead><tr><th>الملف</th><th>التقدم</th><th>السرعة</th><th>الحالة</th><th></th></tr></thead>
+        <tbody id="tasksBody"></tbody></table>
+      </div>
+    </section>
+
+    <section id="p-video" class="panel">
+      <h1>مركز الفيديو 🎬</h1>
+      <div id="analyzeBox" class="muted">الصق رابطًا من المنصات أو رابطًا مباشرًا في الشريط بالأعلى ثم «تحليل الرابط» — النتيجة تظهر هنا.</div>
+      <div class="card warn"><b>ملاحظة فاعلية:</b> <span id="ytNote">كشف الأدوات تلقائيًا…</span></div>
+    </section>
+
+    <section id="p-torrent" class="panel">
+      <h1>التورنت 🧲</h1>
+      <div class="card"><b>v0.2 — جسر خارجي:</b> عند توفر <code>aria2c</code> أو <code>transmission-remote</code> يُبدَل هذه الفراغ بجلسات كاملة (مغناطيس + ملفات .torrent). الأمانة: لا محرك من الصفر في v0.1.</div>
+      <div id="torrentCap"></div>
+    </section>
+
+    <section id="p-uploads" class="panel">
+      <h1>الرفع 📤</h1>
+      <div class="card"><b>v0.2:</b> الإرسال عبر HTTP PUT و مشاركة شبكة — مساحة جاهزة، التشغيلية بقية.</div>
+    </section>
+
+    <section id="p-tools" class="panel">
+      <h1>الأدوات السريعة 🛠️</h1>
+      <div id="toolCaps" class="muted">الكشف عن الإمكانات…</div>
+      <div class="grid2">
+        <div class="card"><h2>✂ تقسيم ملف</h2>
+          <input id="splitSrc" dir="ltr" placeholder="مسار الملف الأصل الكامل">
+          <input id="splitN" type="number" value="8" min="2" max="512">
+          <button class="btn" onclick="toolOp('split')">تقسيم</button></div>
+        <div class="card"><h2>🧲 دمج أجزاء</h2>
+          <input id="joinList" dir="ltr" placeholder="مسارات مفصولة بفاصلة (بالترتيب)">
+          <input id="joinOut" dir="ltr" placeholder="مسار الناتج">
+          <button class="btn" onclick="toolOp('join')">دمج</button></div>
+        <div class="card"><h2>🗄 ضغط ZIP</h2>
+          <input id="zipSrc" dir="ltr" placeholder="ملف أو مجلد">
+          <input id="zipOut" dir="ltr" placeholder="الناتج (اختياري)">
+          <button class="btn" onclick="toolOp('zip')">ضغط</button></div>
+        <div class="card"><h2>🎵 استخراج الصوت</h2>
+          <input id="audioSrc" dir="ltr" placeholder="مسار الفيديو (يحتاج ffmpeg)">
+          <input id="audioOut" dir="ltr" placeholder="الناتج .mp3 (اختياري)">
+          <button class="btn" onclick="toolOp('audio')">استخراج</button></div>
+      </div>
+    </section>
+
+    <section id="p-net" class="panel">
+      <h1>مراقبة الشبكة 🌐</h1>
+      <div class="card"><canvas id="net" height="220"></canvas><div class="muted">سرعة التنزيل الحية (تحديث كل ثانيتين)</div></div>
+    </section>
+
+    <section id="p-logs" class="panel">
+      <h1>سجل الأحداث 📝</h1>
+      <div class="tabs">
+        <button class="tab active" data-l="all">الكل</button>
+        <button class="tab" data-l="errors">الأخطاء</button>
+        <button class="tab" data-l="success">المكتملة</button>
+      </div>
+      <div id="logsBox" class="card logbox"></div>
+    </section>
+
+    <section id="p-settings" class="panel">
+      <h1>الإعدادات ⚙️</h1>
+      <div id="licenseBox" class="card"></div>
+      <div id="settingsBox" class="card"></div>
+    </section>
+  </main>
+</div>
+<div id="toast" class="toast"></div>
+<script src="/app.js"></script>
+</body></html>
